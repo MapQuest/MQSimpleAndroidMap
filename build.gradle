@@ -1,108 +1,33 @@
-apply plugin: 'com.android.application'
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply plugin: 'com.jfrog.artifactory'
+apply plugin: 'maven-publish'
 
-android {
-    def getKeystorePropertiesFile = { build ->
-        return new File("${rootDir}/app/keystore/${build}.properties")
+buildscript {
+    repositories {
+        jcenter()
+        google()
     }
-
-    def getKeystoreProperties = { propertiesFile ->
-        def props = new Properties()
-        props.load(new FileInputStream(propertiesFile))
-        return props
+    dependencies {
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
+        classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:4.3.0'
     }
+}
 
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
-
-    def defaultAppVersionCode = '1'
-    def appVersionCode = System.getProperty('versionCode', defaultAppVersionCode).toInteger()
-
-    applicationVariants.all { variant ->
-        variant.buildConfigField "String", "API_KEY", getApiKey()
-        variant.resValue "string", "API_KEY", getApiKey()
-    }
-
-    defaultConfig {
-        applicationId "com.mapquest.mapping.example"
-        minSdkVersion 16
-        targetSdkVersion 27
-        versionCode appVersionCode
-        versionName "2.0.9"
-        multiDexEnabled true
-    }
-
-    signingConfigs {
-        release {
-            def properties = getKeystoreProperties(getKeystorePropertiesFile('release'))
-            storeFile = file(properties['storeFile'])
-            storePassword = properties['storePassword']
-            keyAlias = properties['keyAlias']
-            keyPassword = properties['keyPassword']
+allprojects {
+    repositories {
+        jcenter()
+        // NOTE: this is the public repo for the MapQuest Navigation SDK
+        maven {
+            url "https://artifactory.cloud.mapquest.com/artifactory/et-android-binaries"
         }
-    }
-
-    flavorDimensions "version"
-    productFlavors {
-        mqInternal {
-        }
-        mqExternal {
-        }
-    }
-
-    buildTypes {
-        debug {
-            applicationIdSuffix '.debug'
-        }
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.debug
-        }
-    }
-
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES.txt'
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/dependencies.txt'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/LGPL2.1'
-        exclude 'META-INF/INDEX.LIST'
-        exclude 'LICENSE.txt'
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        google()
     }
 }
 
 
-dependencies {
-    implementation project(':mapping')
-    testImplementation 'junit:junit:4.12'
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.google.android.gms:play-services-location:15.0.1'
-    implementation ('com.mapquest:searchahead:1.3.1')  {
-        transitive = true
-    }
-
-    implementation 'com.android.support:multidex:1.0.3'
-
-            // use published aar for test app
-    //    compile("com.mapquest:mapping-android-sdk:${library_version}@aar") {
-    //        transitive = true
-    //    }
-    implementation 'com.android.support:design:27.1.1'
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
-
-def getApiKey() {
-    def props = new Properties()
-    file("mapquest.properties").withInputStream { props.load(it) }
-    return "\"" + props.getProperty("api_key") + "\""
-}
-
