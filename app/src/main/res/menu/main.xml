@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/street_view"
+          android:title="Street View"
+          android:showAsAction="never"/>
+    <item android:id="@+id/satellite_view"
+          android:title="Satellite View"
+          android:showAsAction="never"/>
+    <item android:id="@+id/night_view"
+          android:title="Night View"
+          android:showAsAction="never"/>
+    <item android:id="@+id/add_polygon"
+        android:title="Add Polygon"
+        android:showAsAction="never"/>
+    <item android:id="@+id/add_polyline"
+        android:title="Add Polyline"
+        android:showAsAction="never"/>
+    <item android:id="@+id/add_annotation"
+        android:title="Add Marker"
+        android:showAsAction="never"/>
+    <item android:id="@+id/add_coffeeshops"
+        android:title="Show Coffee Shops"
+        android:showAsAction="never"/>
+    <item android:id="@+id/goto_Denver"
+        android:title="Goto Denver"
+        android:showAsAction="never"/>
+    <item android:id="@+id/goto_user_loc"
+        android:title="Goto User Location"
+        android:showAsAction="never"/>
+    <item android:id="@+id/toggle_traffic"
+        android:title="Toggle Traffic"
+        android:showAsAction="never"/>
+    <item android:id="@+id/styleBuildings"
+        android:title="Style Buildings Red"
+        android:showAsAction="never"/>
+</menu>
