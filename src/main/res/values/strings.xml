@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MapQuest Mapping SDK Example</string>
+    <string name="mapquest_street">Streets</string>
+    <string name="mapquest_satellite">Satellite</string>
+    <string name="traffic_flow">Traffic Flow</string>
+    <string name="traffic_incidents">Traffic Incidents</string>
+    <string name="message">Click on menu for Menu Demo</string>     
+
+</resources>
